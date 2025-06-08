@@ -1,0 +1,27 @@
+services:
+  eureka-server:
+    image: laus1205/eureka-server:1.0.0
+    ports:
+      - "8761:8761"
+    expose:
+      - "8761"
+    networks:
+     - hr-system
+
+  gateway-api:
+    image: laus1205/gateway-api:1.0.0
+    ports:
+      - "8765:8765"
+    expose:
+      - "8765"
+    depends_on:
+      - eureka-server
+    environment:
+      - EUREKA_URL=http://eureka-server:8761/eureka
+    networks:
+      - hr-system
+
+
+networks:
+  hr-system:
+    driver: bridge
