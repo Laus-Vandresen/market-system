@@ -21,7 +21,37 @@ services:
     networks:
       - hr-system
 
+  db:
+    image: postgres:15
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - hr-system    
+
+  product-api:
+    image: laus1205/product-api:1.0.3
+    ports:
+      - "8100:8100"
+    depends_on:
+      - eureka-server
+      - gateway-api
+      - db
+    environment:
+      - EUREKA_URL=http://eureka-server:8761/eureka
+    networks:
+     - hr-system
+
 
 networks:
   hr-system:
     driver: bridge
+
+volumes:
+  postgres_data:
