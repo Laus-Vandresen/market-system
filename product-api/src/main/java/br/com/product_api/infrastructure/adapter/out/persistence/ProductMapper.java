@@ -6,6 +6,7 @@ public class ProductMapper {
 
     public static ProductEntity toEntity(Product domain) {
         ProductEntity entity = new ProductEntity();
+        entity.setId(domain.getId());
         entity.setName(domain.getName());
         entity.setDescription(domain.getDescription());
         entity.setPrice(domain.getPrice());
@@ -17,6 +18,7 @@ public class ProductMapper {
 
     public static Product toDomain(ProductEntity entity) {
         return new Product(
+                entity.getId(),
                 entity.getName(),
                 entity.getDescription(),
                 entity.getPrice(),
