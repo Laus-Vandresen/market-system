@@ -6,7 +6,7 @@ services:
     expose:
       - "8761"
     networks:
-     - hr-system
+     - market-system
 
   gateway-api:
     image: laus1205/gateway-api:1.0.0
@@ -19,21 +19,24 @@ services:
     environment:
       - EUREKA_URL=http://eureka-server:8761/eureka
     networks:
-      - hr-system
+      - market-system
 
   db:
     image: postgres:15
-    container_name: postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - hr-system    
+      - market-system
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5  
 
   product-api:
     image: laus1205/product-api:1.0.3
@@ -46,11 +49,27 @@ services:
     environment:
       - EUREKA_URL=http://eureka-server:8761/eureka
     networks:
-     - hr-system
+     - market-system
+
+  sale-api:
+    image: laus1205/sale-api:1.0.0
+    ports:
+      - "8080:8080"
+    depends_on:
+      eureka-server:
+        condition: service_started
+      gateway-api:
+        condition: service_started
+      db:
+        condition: service_healthy
+    environment:
+      - EUREKA_URL=http://eureka-server:8761/eureka
+    networks:
+     - market-system   
 
 
 networks:
-  hr-system:
+  market-system:
     driver: bridge
 
 volumes:

@@ -1,5 +1,6 @@
 package br.com.product_api.infrastructure.adapter.in.controller;
 
+import br.com.product_api.application.port.in.DecreaseStockUseCase;
 import br.com.product_api.application.port.in.FindProductUseCase;
 import br.com.product_api.application.port.in.RegisterProductUseCase;
 import br.com.product_api.domain.model.Product;
@@ -18,6 +19,8 @@ public class ProductController {
 
     private final FindProductUseCase findProductUseCase;
 
+    private final DecreaseStockUseCase decreaseStockUseCase;
+
     @PostMapping
     public ResponseEntity<Product> register(@RequestBody Product product) {
         return ResponseEntity.ok(registerProductUseCase.register(product));
@@ -34,4 +37,10 @@ public class ProductController {
         Product product = findProductUseCase.findByName(name);
         return ResponseEntity.ok(product);
     }
+
+    @PutMapping("/descrease-stock/{id}/{quantity}")
+    public ResponseEntity<Product> decreaseStock(@PathVariable UUID id, @PathVariable int quantity) {
+        return ResponseEntity.ok(decreaseStockUseCase.decreaseStock(id, quantity));
+    }
+
 }
