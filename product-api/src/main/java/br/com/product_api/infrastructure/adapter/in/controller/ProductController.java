@@ -2,6 +2,7 @@ package br.com.product_api.infrastructure.adapter.in.controller;
 
 import br.com.product_api.application.port.in.DecreaseStockUseCase;
 import br.com.product_api.application.port.in.FindProductUseCase;
+import br.com.product_api.application.port.in.IncreaseStockUseCase;
 import br.com.product_api.application.port.in.RegisterProductUseCase;
 import br.com.product_api.domain.model.Product;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,8 @@ public class ProductController {
     private final FindProductUseCase findProductUseCase;
 
     private final DecreaseStockUseCase decreaseStockUseCase;
+
+    private final IncreaseStockUseCase increaseStockUseCase;
 
     @PostMapping
     public ResponseEntity<Product> register(@RequestBody Product product) {
@@ -41,6 +44,11 @@ public class ProductController {
     @PutMapping("/descrease-stock/{id}/{quantity}")
     public ResponseEntity<Product> decreaseStock(@PathVariable UUID id, @PathVariable int quantity) {
         return ResponseEntity.ok(decreaseStockUseCase.decreaseStock(id, quantity));
+    }
+
+    @PutMapping("/increase-stock/{id}/{quantity}")
+    public ResponseEntity<Product> increaseStock(@PathVariable UUID id, @PathVariable int quantity) {
+        return ResponseEntity.ok(increaseStockUseCase.increaseStock(id, quantity));
     }
 
 }

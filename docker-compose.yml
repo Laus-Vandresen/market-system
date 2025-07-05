@@ -65,7 +65,23 @@ services:
     environment:
       - EUREKA_URL=http://eureka-server:8761/eureka
     networks:
-     - market-system   
+     - market-system
+
+  purchase-order-api:
+    image: laus1205/purchase-order-api:1.0.0
+    ports:
+      - "8200:8200"
+    depends_on:
+      eureka-server:
+        condition: service_started
+      gateway-api:
+        condition: service_started
+      db:
+        condition: service_healthy
+    environment:
+      - EUREKA_URL=http://eureka-server:8761/eureka
+    networks:
+     - market-system     
 
 
 networks:

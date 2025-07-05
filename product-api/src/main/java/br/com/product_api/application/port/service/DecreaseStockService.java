@@ -6,6 +6,7 @@ import br.com.product_api.application.port.out.DecreaseStockPort;
 import br.com.product_api.application.port.out.FindProductPort;
 import br.com.product_api.domain.model.Product;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public class DecreaseStockService implements DecreaseStockUseCase {
@@ -20,8 +21,11 @@ public class DecreaseStockService implements DecreaseStockUseCase {
 
     @Override
     public Product decreaseStock(UUID id, int quantity) {
-        Product product = findProductPort.findById(id);
-        if (product.getQuantityInStock() < quantity) {
+        Optional<Product> product = findProductPort.findById(id);
+        if (!product.isPresent()) {
+            throw new IllegalArgumentException(String.format("Product with ID: %s not found", id));
+        }
+        if (product.get().getQuantityInStock() < quantity) {
             throw new InsufficientStockException(String.format("Insufficient stock for product with ID: %s", id));
         }
         return decreaseStockPort.decreaseStock(id, quantity);

@@ -1,11 +1,14 @@
 package br.com.product_api.domain.model;
 
+import lombok.Getter;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
 
+@Getter
 public class Product {
 
     private final  UUID id;
@@ -57,17 +60,6 @@ public class Product {
         }
         return new Product(this.id, this.name, this.description, this.price, this.quantityInStock - quantity, this.active);
     }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public String getName() { return name; }
-    public String getDescription() { return description; }
-    public BigDecimal getPrice() { return price; }
-    public int getQuantityInStock() { return quantityInStock; }
-    public boolean isActive() { return active; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
 
     @Override
     public boolean equals(Object o) {

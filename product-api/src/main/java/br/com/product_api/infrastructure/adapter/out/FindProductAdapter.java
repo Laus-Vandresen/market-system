@@ -6,6 +6,7 @@ import br.com.product_api.infrastructure.adapter.out.persistence.ProductJpaRepos
 import br.com.product_api.infrastructure.adapter.out.persistence.ProductMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -24,8 +25,8 @@ public class FindProductAdapter implements FindProductPort {
     }
 
     @Override
-    public Product findById(UUID id) {
+    public Optional<Product> findById(UUID id) {
         var productEntity = repository.findById(id);
-        return productEntity.map(ProductMapper::toDomain).orElse(null);
+        return productEntity.map(ProductMapper::toDomain);
     }
 }

@@ -21,6 +21,6 @@ public class FindProductService implements FindProductUseCase {
 
     @Override
     public Product findById(UUID id) {
-        return findProductPort.findById(id);
+        return findProductPort.findById(id).orElse(null);
     }
 }

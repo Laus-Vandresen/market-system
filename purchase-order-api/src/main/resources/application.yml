@@ -1,8 +1,8 @@
 spring:
   application:
-    name: sale-api
+    name: purchase-order-api
   datasource:
-    url: jdbc:postgresql://db:5432/sale_db
+    url: jdbc:postgresql://db:5432/purchase_order_db
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
@@ -15,7 +15,7 @@ spring:
         format_sql: true
         show_sql: true
 server:
-  port: ${PORT:8080}
+  port: ${PORT:8200}
 eureka:
   client:
     service-url:
